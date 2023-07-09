@@ -7,24 +7,32 @@ form.addEventListener("submit", (e) => {
 
 function removeBox() {
   const removeBox = document.querySelectorAll(".remove");
+  const addClass = "add";
   removeBox.forEach((item) => {
-    item.addEventListener("click", (e) => e.target.parentElement.remove());
+    if (!item.classList.contains(addClass)) {
+      item.addEventListener("click", (e) => item.parentElement.remove());
+      item.classList.add(addClass);
+    }
   });
 }
 
 function checkBox() {
   const check = document.querySelectorAll(".box-ok");
-  check.forEach((item) =>
-    setTimeout(() => {
+  const addClass = "add";
+  const activeClass = "active";
+  check.forEach((item) => {
+    if (!item.classList.contains(addClass)) {
       item.addEventListener("click", () => {
-        if (item.classList.contains("active")) {
-          item.classList.remove("active");
+        item.classList.toggle(activeClass);
+        if (item.classList.contains(activeClass)) {
+          item.innerHTML = `<i class="fa-solid fa-check"></i>`;
         } else {
-          item.classList.add("active");
+          item.innerHTML = "";
         }
       });
-    })
-  );
+      item.classList.add(addClass);
+    }
+  });
 }
 
 function createNewTask(value) {
