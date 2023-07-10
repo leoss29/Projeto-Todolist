@@ -1,5 +1,6 @@
 const taskInput = document.querySelector("#task-input");
 const form = document.forms[0];
+const events = ["touchstart", "click"];
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -7,31 +8,49 @@ form.addEventListener("submit", (e) => {
 
 function removeBox() {
   const removeBox = document.querySelectorAll(".remove");
-  const addClass = "add";
-  removeBox.forEach((item) => {
-    if (!item.classList.contains(addClass)) {
-      item.addEventListener("click", (e) => item.parentElement.remove());
-      item.classList.add(addClass);
-    }
+  const addTouch = "touch";
+  const addClick = "click";
+  function removeItem() {
+    this.parentElement.remove();
+  }
+  events.forEach((event) => {
+    removeBox.forEach((item) => {
+      if (!item.classList.contains(addTouch)) {
+        item.addEventListener(event, removeItem);
+        item.classList.add(addTouch);
+      } else if (!item.classList.contains(addClick)) {
+        item.addEventListener(event, removeItem);
+        item.classList.add(addClick);
+      }
+    });
   });
 }
 
 function checkBox() {
   const check = document.querySelectorAll(".box-ok");
-  const addClass = "add";
+  const addTouch = "touch";
+  const addClick = "click";
   const activeClass = "active";
-  check.forEach((item) => {
-    if (!item.classList.contains(addClass)) {
-      item.addEventListener("click", () => {
-        item.classList.toggle(activeClass);
-        if (item.classList.contains(activeClass)) {
-          item.innerHTML = `<i class="fa-solid fa-check"></i>`;
-        } else {
-          item.innerHTML = "";
-        }
-      });
-      item.classList.add(addClass);
+
+  function addCheck() {
+    this.classList.toggle(activeClass);
+    if (this.classList.contains(activeClass)) {
+      this.innerHTML = `<i class="fa-solid fa-check"></i>`;
+    } else {
+      this.innerHTML = "";
     }
+  }
+
+  events.forEach((event) => {
+    check.forEach((item) => {
+      if (!item.classList.contains(addTouch)) {
+        item.addEventListener(event, addCheck);
+        item.classList.add(addTouch);
+      } else if (!item.classList.contains(addClick)) {
+        item.addEventListener(event, addCheck);
+        item.classList.add(addClick);
+      }
+    });
   });
 }
 
